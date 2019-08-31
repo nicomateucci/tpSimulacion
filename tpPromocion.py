@@ -12,6 +12,7 @@
 #     medidasDesempeño
 #     generarTiempoExponencial
 
+TIEMPO_ENTRE_ARRIBOS = 9.0
 import numpy as np
 import time
 import sys
@@ -39,7 +40,7 @@ class Servidor(object):
 
         # Tiempo entre arribos depende de la Simulacion no del Sevidor, pero para simplificar el
         #     problema, le agregue el atributo tambien a servidor.
-        self.tiempoEntreArribos = 10.0
+        self.tiempoEntreArribos = TIEMPO_ENTRE_ARRIBOS
         self.reloj = 0
         self.estadoServ = 0
         self.lista_eventos = []
@@ -58,11 +59,11 @@ class Servidor(object):
         if self.lista_eventos[0] <= self.lista_eventos[1]:
             self.reloj = self.lista_eventos[0]
             self.arribo()
-            return self.reloj, 0
+            return self.reloj, False
         else:
             self.reloj = self.lista_eventos[1]
             self.partida()
-            return self.reloj, 1
+            return self.reloj, True
 
     def agregar_tiempo_arribo(self, t):
         self.lista_eventos.insert(0, t)
@@ -127,6 +128,7 @@ class Servidor(object):
             self.tiempo_servicio_total += ((self.reloj - self.tiempo_ultimo_evento))
             self.estadoServ = 0
             self.lista_eventos[1] = 99999.0
+            print("Servidor numero" + str(self._id) + " quedo en estado " + str(self.estadoServ))
 
 
     def medidasDesempeño(self):
@@ -149,7 +151,7 @@ class SimuladorMM1(object):
 
     def __init__(self):
         #Tiempo de arribos a las colas
-        self.tiempoEntreArribos = 10.0
+        self.tiempoEntreArribos = TIEMPO_ENTRE_ARRIBOS
         #Inicializacion de variables
         self.reloj_simulacion = 0.0
         self.proximoEvento = ""
@@ -159,15 +161,22 @@ class SimuladorMM1(object):
 
         self.servidor1 = Servidor(1, 7)
         self.servidor2 = Servidor(2, 5)
-        # self.servidor3 = Servidor(3, 5)
-        # self.servidor4 = Servidor(4, 5)
-        # self.servidor5 = Servidor(5, 6)
+        self.servidor3 = Servidor(3, 5)
+        self.servidor4 = Servidor(4, 5)
+        self.servidor5 = Servidor(5, 6)
 
         # Primeros arribos en ambos servidores
         self.servidor1.agregar_tiempo_arribo(generarTiempoExponencial(self.tiempoEntreArribos))
         self.servidor2.agregar_tiempo_arribo(generarTiempoExponencial(self.tiempoEntreArribos))
+        self.servidor3.agregar_tiempo_arribo(0)
+        self.servidor4.agregar_tiempo_arribo(0)
+        self.servidor5.agregar_tiempo_arribo(0)
+
         self.servidor1.agregar_tiempo_partida(99999.0)
         self.servidor2.agregar_tiempo_partida(99999.0)
+        self.servidor3.agregar_tiempo_partida(99999.0)
+        self.servidor4.agregar_tiempo_partida(99999.0)
+        self.servidor5.agregar_tiempo_partida(99999.0)
 
     def correr_simulacion(self):
 
@@ -178,18 +187,16 @@ class SimuladorMM1(object):
             self.reloj1, self.es_partida1 = self.servidor1.nuevo_evento()
             self.reloj2, self.es_partida2 = self.servidor2.nuevo_evento()
 
-            # print(self.reloj1, self.es_partida1 )
-            # print(self.reloj2, self.es_partida2 )
-            # Calcular reloj global de la simulacion
 
-            # print(self.servidor1.lista_eventos)
-            # print(self.servidor2.lista_eventos)
-
+            # Considero que el reloj de la simulacion es el mayor de los servidores 1 y 2.
             if self.reloj1 >= self.reloj2:
                 self.reloj_simulacion = self.reloj1
             else:
                 self.reloj_simulacion = self.reloj2
-            #
+
+
+            # if self.es_partida1:
+            #     self.cola_intermedia.append(self.reloj1)
             # if self.es_partida2:
             #     self.cola_intermedia.append(self.reloj2)
 
@@ -200,44 +207,57 @@ class SimuladorMM1(object):
 
             # En caso de que halla alguna partida en los servidores (1 o 2), los agrego a la cola intermedia
             #     y si alguno de los otros servidores esta libre agrego el arribo (En 3, 4 o 5)
-            # if self.es_partida1:
-            #     if self.cola_intermedia:
-            #         if self.servidor3.estadoServ:
-            #             self.servidor3.agregar_tiempo_arribo(self.reloj1)
-            #             self.servidor3.nuevo_evento()
-            #         elif self.servidor4.estadoServ:
-            #              self.servidor4.agregar_tiempo_arribo(self.reloj1)
-            #              self.servidor4.nuevo_evento()
-            #         elif self.servidor5.estadoServ:
-            #              self.servidor5.agregar_tiempo_arribo(self.reloj1)
-            #              self.servidor5.nuevo_evento()
-            #         else:
-            #              self.cola_intermedia.append(self.reloj1)
-            #     else:
-            #         self.cola_intermedia.append(self.reloj1)
-            #
-            # if self.es_partida2:
-            #     if self.cola_intermedia:
-            #         if self.servidor3.estadoServ:
-            #             self.servidor3.agregar_tiempo_arribo(self.reloj2)
-            #             self.servidor3.nuevo_evento()
-            #         elif self.servidor4.estadoServ:
-            #             self.servidor4.agregar_tiempo_arribo(self.reloj2)
-            #             self.servidor4.nuevo_evento()
-            #         elif self.servidor5.estadoServ:
-            #             self.servidor5.agregar_tiempo_arribo(self.reloj2)
-            #             self.servidor5.nuevo_evento()
-            #         else:
-            #             self.cola_intermedia.append(self.reloj2)
-            #             print(self.cola_intermedia)
-            #     else:
-            #         self.cola_intermedia.append(self.reloj2)
-            #         print(self.cola_intermedia)
 
-            if self.reloj_simulacion >= 5000:
+            if self.es_partida1:
+                if self.cola_intermedia:
+                    if self.servidor3.estadoServ == 0:
+                        self.cola_intermedia.pop(0)
+                        self.servidor3.agregar_tiempo_arribo(self.reloj1)
+                        self.servidor3.nuevo_evento()
+                    elif self.servidor4.estadoServ == 0:
+                         self.cola_intermedia.pop(0)
+                         self.servidor4.agregar_tiempo_arribo(self.reloj1)
+                         self.servidor4.nuevo_evento()
+                    elif self.servidor5.estadoServ == 0:
+                         self.cola_intermedia.pop(0)
+                         self.servidor5.agregar_tiempo_arribo(self.reloj1)
+                         self.servidor5.nuevo_evento()
+                    else:
+                         self.cola_intermedia.append(self.reloj1)
+                         print("En not cola_int reloj esta en " + str(self.reloj_simulacion))
+                else:
+                    self.cola_intermedia.append(self.reloj1)
+                    print("En self.es_partida1 reloj esta en " + str(self.reloj_simulacion))
+
+            if self.es_partida2:
+                if self.cola_intermedia:
+                    if self.servidor3.estadoServ == 0:
+                        self.cola_intermedia.pop(0)
+                        self.servidor3.agregar_tiempo_arribo(self.reloj2)
+                        self.servidor3.nuevo_evento()
+                    elif self.servidor4.estadoServ == 0:
+                        self.cola_intermedia.pop(0)
+                        self.servidor4.agregar_tiempo_arribo(self.reloj2)
+                        self.servidor4.nuevo_evento()
+                    elif self.servidor5.estadoServ == 0:
+                        self.cola_intermedia.pop(0)
+                        self.servidor5.agregar_tiempo_arribo(self.reloj2)
+                        self.servidor5.nuevo_evento()
+                    else:
+                        self.cola_intermedia.append(self.reloj2)
+                        print("En not cola_int reloj esta en " + str(self.reloj_simulacion))
+                else:
+                    self.cola_intermedia.append(self.reloj2)
+                    print("En self.es_partida2 reloj esta en " + str(self.reloj_simulacion))
+
+            print("En tiempo " + str(self.reloj_simulacion) + " Tamaño cola " + str(len(self.cola_intermedia))+ " Cola: " + str(self.cola_intermedia))
+
+            if self.reloj_simulacion >= 20:
                 break
-        self.servidor1.medidasDesempeño()
-        self.servidor2.medidasDesempeño()
+        # print(self.cola_intermedia)
+        # self.servidor2.medidasDesempeño()
+        # self.servidor1.medidasDesempeño()
+
 
 
 # ---------------------------------------------
@@ -253,5 +273,4 @@ def generarTiempoExponencial(media):
 
 sim1 = SimuladorMM1()
 sim1.correr_simulacion()
-
 
