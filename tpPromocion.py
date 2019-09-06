@@ -17,6 +17,7 @@ from asyncore import file_dispatcher
 TIEMPO_ENTRE_ARRIBOS = 10
 INFINITO = 90000000000000.0  # 90 BILLONES DE PESOS O 1.45 BILLONES DE DOLARES
 import numpy as np
+import math
 import time
 import sys
 
@@ -54,21 +55,38 @@ class Servidor(object):
         self.area_qt = 0.0
         self.tiempo_servicio_total = 0
 
-    def arribo_cola_intermedia(self, reloj):
+    def arribo_grupo2(self, reloj):
 
-        self.tiempo_ultimo_evento = reloj
         self.reloj = reloj
         self.lista_eventos[1] = reloj + generarTiempoExponencial(self.tiempo_entre_servicios)
         self.estadoServ = 1
         Simulador.Cola_intermedia.pop(0)
         if len(Simulador.Cola_intermedia) > 0:
+            Simulador.AreaQ += (len(Simulador.Cola_intermedia)*(self.reloj - self.tiempo_ultimo_evento))
             self.lista_eventos[0] = Simulador.Cola_intermedia[0]
             Simulador.Cola_intermedia.pop(0)
 
         Simulador.Completaron_demora += 1
-        Simulador.actualizar_lista_eventos(self._id, self.lista_eventos)
 
-    def partida_cola_intermedia(self, reloj):
+        self.tiempo_ultimo_evento = reloj
+        Simulador.actualizar_lista_eventos(self._id, self.lista_eventos)
+        # self.tiempo_ultimo_evento = reloj
+        # self.reloj = reloj
+        # self.lista_eventos[1] = reloj + generarTiempoExponencial(self.tiempo_entre_servicios)
+        # self.estadoServ = 1
+        # Simulador.Completaron_demora += 1
+        #
+        #
+        # if len(Simulador.Cola_intermedia) > 0:
+        #
+        #     # Simulador.AreaQ += (len(Simulador.Cola_intermedia) * (self.reloj - self.tiempo_ultimo_evento))
+        #     self.lista_eventos[0] = Simulador.Cola_intermedia[0]
+        #     Simulador.Cola_intermedia.pop(0)
+        #
+        # Simulador.Cola_intermedia.pop(0)
+        # Simulador.actualizar_lista_eventos(self._id, self.lista_eventos)
+
+    def partida_grupo2(self, reloj):
 
         self.reloj = reloj
         if len(Simulador.Cola_intermedia) > 0:
@@ -76,8 +94,8 @@ class Servidor(object):
             Simulador.Completaron_demora += 1
             Simulador.Demora_acumulada += self.reloj - Simulador.Cola_intermedia[0]
             self.tiempo_servicio_total += (self.reloj - self.tiempo_ultimo_evento)
-            self.area_qt += (len(Simulador.Cola_intermedia) * (self.reloj - self.lista_eventos[0]))
-            self.arribo_cola_intermedia(reloj)
+            Simulador.AreaQ += (len(Simulador.Cola_intermedia) * (self.reloj - self.tiempo_ultimo_evento))
+            self.arribo_grupo2(reloj)
         else:
             self.estadoServ = 0
             self.tiempo_servicio_total += (self.reloj - self.tiempo_ultimo_evento)
@@ -137,17 +155,20 @@ class Servidor(object):
         Simulador.actualizar_lista_eventos(self._id, self.lista_eventos)
 
     def medidasDesempeño(self):
-        print("Medidas de desempeño del servidor: ", self._id)
         print("---------------------------------------------------")
+        print("Medidas de desempeño del servidor: ", self._id)
         var2 = self.tiempo_servicio_total / self.reloj
-        print("Tiempo de servicio ", self.tiempo_servicio_total, " Reloj", self.reloj)
-        print("Utilización promedio del servidors:", var2)
+        var2 = round(var2 * 100, 2)
+        # print("Tiempo de servicio ", self.tiempo_servicio_total, " Reloj", self.reloj)
+        print("    Utilización promedio del servidor:", var2)
         if self._id == 1 or self._id == 2:
             var1 = self.area_qt / self.reloj
-            print("Nro promedio de cli en cola:", var1)
+            # var1 = math.trunc(var1, 2)
+            print("    Nro promedio de cli en cola: %.2f" % var1)
             var3 = self.demora_acumulada / self.completaron_demora
-            print("Demora promedio por cliente:", var3)
-        print("---------------------------------------------------")
+            # var3 = math.trunc( 2)
+            print("    Demora promedio por cliente: %.2f" % var3)
+        # print("---------------------------------------------------")
 
 
 class Simulador(object):
@@ -157,6 +178,7 @@ class Simulador(object):
     Cola_intermedia = []
     Completaron_demora = 0
     Demora_acumulada = 0.0
+    AreaQ = 0.0
 
     def __init__(self):
         self.tiempoEntreArribos = TIEMPO_ENTRE_ARRIBOS
@@ -230,22 +252,22 @@ class Simulador(object):
                     print(Simulador.Lista_eventos)
                     print(len(Simulador.Cola_intermedia))
                 if self.servidor3.estadoServ == 0:
-                    self.servidor3.arribo_cola_intermedia(self.reloj_simulacion)
+                    self.servidor3.arribo_grupo2(self.reloj_simulacion)
                 elif self.servidor4.estadoServ == 0:
-                    self.servidor4.arribo_cola_intermedia(self.reloj_simulacion)
+                    self.servidor4.arribo_grupo2(self.reloj_simulacion)
                 elif self.servidor5.estadoServ == 0:
-                    self.servidor5.arribo_cola_intermedia(self.reloj_simulacion)
+                    self.servidor5.arribo_grupo2(self.reloj_simulacion)
 
 
 
             if self.servidor_evento == 3 and self.servidor3.lista_eventos[1] != INFINITO:
-                self.servidor3.partida_cola_intermedia(self.reloj_simulacion)
+                self.servidor3.partida_grupo2(self.reloj_simulacion)
             if self.servidor_evento == 4 and self.servidor4.lista_eventos[1] != INFINITO:
-                self.servidor4.partida_cola_intermedia(self.reloj_simulacion)
+                self.servidor4.partida_grupo2(self.reloj_simulacion)
             if self.servidor_evento == 5 and self.servidor5.lista_eventos[1] != INFINITO:
-                self.servidor5.partida_cola_intermedia(self.reloj_simulacion)
+                self.servidor5.partida_grupo2(self.reloj_simulacion)
 
-            if self.reloj_simulacion >= 150000:
+            if self.reloj_simulacion >= 400000:
                 break
         # print(self.cola_intermedia)
         self.servidor1.medidasDesempeño()
@@ -253,10 +275,18 @@ class Simulador(object):
         self.servidor3.medidasDesempeño()
         self.servidor4.medidasDesempeño()
         self.servidor5.medidasDesempeño()
-        var1 = Simulador.Demora_acumulada / Simulador.Completaron_demora
-        print("Tiempo promedio de cliente en cola intermedia %s" % var1)
-        print("Completaron demora ", Simulador.Completaron_demora)
-        print("Demora acumulada", Simulador.Demora_acumulada)
+        # var1 = Simulador.Demora_acumulada / Simulador.Completaron_demora
+        # print("Tiempo promedio de cliente en el sistema %s" % var1)
+        # print("Completaron demora ", Simulador.Completaron_demora)
+        # print("Demora acumulada", Simulador.Demora_acumulada)
+        var2 = Simulador.AreaQ / self.reloj_simulacion
+        print("--------------------------------------------------------")
+        print("Medidas desempeño Cola Intermedia")
+        print("    Numero promedio de clientes en cola intermedia %.2f"% var2)
+        print("    Area Q(t) Cola Intermedia %.3f" % Simulador.AreaQ)
+        print("    Reloj simulacion: %.2f"
+              ""
+              "" % self.reloj_simulacion)
 
 
 # ---------------------------------------------
