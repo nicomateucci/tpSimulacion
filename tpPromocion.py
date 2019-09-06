@@ -240,8 +240,8 @@ class Simulador(object):
         self.servidor1.medidasDesempeño()
         self.servidor2.medidasDesempeño()
         self.servidor3.medidasDesempeño()
-        # self.servidor4.medidasDesempeño()
-        # self.servidor5.medidasDesempeño()
+        self.servidor4.medidasDesempeño()
+        self.servidor5.medidasDesempeño()
 
 
 # ---------------------------------------------
