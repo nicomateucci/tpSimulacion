@@ -1,23 +1,24 @@
-# Sistema de Red de Colas
+<h1 align="center">
+  <img src="assets/img/UTN.png" alt="logo_utn">
+</h1>
+<h5 align="center">Universidad Tecnologica Nacional</h5>
+
+# Trabajo practico integrador
 
 
-## Trabajo Practico Integrador
-
-
-**Universidad Tecnologica Nacional**
+## Simulación de Red de Colas
 
 **Materia: Simulación**
+**Profesor: Juan Ignacio Torres**
 
+#### Programar en Pyhton un simulador de un sistema de res de colas como se  describe en la siguiente imagen:
 _Imagen del sistema_
 
 ![Imagen del Sistema](assets/img/TPSimulacion.png)
 
-## Mejora aplicada
+#### Finalizado el primer punto, se le aplico una mejora al sistema, agregandole una cola intermedia mas  rapida, a la que se le asigna el 30% de los clientes que salen de los dos primeros servidores.
 
-Finalizada la simulación, se le aplico una mejora al sistema, agregandole una cola intermedia
-rapida, a la que se le asigna el 30% de los clientes que salen de los dos primeros servidores.
-
-####Comparacion de resultados
+### Comparacion de resultados
 
 | Medidas | Sistema inicial | Sistema con mejora|
 | :------- | :------: | -----: |
@@ -54,4 +55,4 @@ _Para Linux:_
 ```
 git clone https://github.com/nicomateucci/tpSimulacion
 ```
-_Se puede hacer desde la consola de Pycharm_
+_Se puede hacer desde la consola de Pycharm._
