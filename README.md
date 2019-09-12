@@ -12,6 +12,27 @@ _Imagen del sistema_
 
 ![Imagen del Sistema](assets/img/TPSimulacion.png)
 
+## Mejora aplicada
+
+Finalizada la simulación, se le aplico una mejora al sistema, agregandole una cola intermedia
+rapida, a la que se le asigna el 30% de los clientes que salen de los dos primeros servidores.
+
+####Comparacion de resultados
+
+| Medidas | Sistema inicial | Sistema con mejora|
+| :------- | :------: | -----: |
+| Utilizacion servidor 1   | 70.9| 69.9|
+| N° Prom clientes cola 1  | 1.79| 1.72|
+| Utilizacion servidor 2   | 51.1| 50.66|
+| N° Prom clientes cola 2  | 0.53 | 0.49|
+| Utilizacion servidor 3   | 50.98| 53.2|
+| Utilizacion servidor 4   | 30.51 | 33.61|
+| Utilizacion servidor 5   | 17.5 | 19.6   |
+| N° Prom clientes cola intermedia  | 0.16 | 0.08|
+| N° Prom clientes cola rapida  | -- | 0.04|
+| Tiempo Prom en el sistema  | 13.26| 12.48|
+
+
 
 ## Simulador Online
 
