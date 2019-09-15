@@ -43,6 +43,7 @@ _Imagen del sistema_
 El programa consta de dos clases con sus respsectivos atributos:
 
 **Servidor**
+
 * arribo
 * partida
 * arribo_grupo2
@@ -59,30 +60,31 @@ El programa consta de dos clases con sus respsectivos atributos:
 
 **Metodos de clase**
 
- actualizar_lista_eventos
- actualizar_tiempo_en_sistema(cls, t)
+* actualizar_lista_eventos
+* actualizar_tiempo_en_sistema(cls, t)
  
  **Variables de clase**
  
-Cantidad_clientes_en_sistema
-Tiempo_clientes_en_sistema
-Lista_eventos
-Cola_intermedia
-Completaron_demora
-Demora_acumulada
-AreaQ
+* Cantidad_clientes_en_sistema
+* Tiempo_clientes_en_sistema
+* Lista_eventos
+* Cola_intermedia 
+* Completaron_demora
+* Demora_acumulada
+* AreaQ
 
 El programa funciona a partir de una lista de eventos general, la cual almacena el proximo evento que ecurre en cada servidor. Estos son: arribos y partidas en cada uno de los 5 servidor, donde los arribos de los ultimos 3 se generan solo si se produce una partida en uno de los dos primeros servidores y ademas, alguno de los servidores 3, 4 o 5 estan libres.
 La funcionalidad de los servidores 1 y 2 es la misma que se presento en el trabajo practico de cola simple, ya que cada uno de estos es un sistema de colas simple independiente.
 Para la cola intermedia se utilizo una variable de clase, en la clase Simulacion, a la que los servidores tiene acceso para agregar o sacar clientes.
 
-** Ejecucion del programa**
+**Ejecucion del programa**
 
 Cuando se ejecuta el metodo **correr_simulacion**, se inicializan las variables y se ingresa a un bucle while que termina cuando llega al tiempo definido de la simulacion.
 Dentro del bucle, primero se llama al metodo **nuevo_evento**, que a partir del metodo **minimo**( Que generar un nuevo evento bajo el supuesto de que nunca va a haber dos eventos en el mismo instante,   ya que la funcion que retorna los numeros aleatorios de 16 decimales. ), devuelve el número servidor en el que se produce el proximo evento.
 Luego, en caso de que el servidor invlucrado sea el 1 o el 2, se llama a sus respectivos metodos para procesar un nuevo evento. Estos al finalizar, modifican la variable de clase del objeto Simulacion que contiene las lista de eventos global.
 En caso de producirse un partida, automaticamente se agrega a la cola intermedia para que, en caso de que algunos de los servidores 3, 4 o 5 esten libres, se encarguen de procesar el esa partida como un nuevo arribo.
 Por ultimo, se llama al metodo **estadisticas_simulacion**, que muestra el valor de los estadisticos obtenidos y ademas llema a los metodos respectivos para mostrar sus estadisticas de los servidores 1 y 2 (Que consisten en sistemas M/M/1 independientes).
+
 ## Clonar archivos con Git
 
 _En caso de no tener instalado Git, descargar desde 
