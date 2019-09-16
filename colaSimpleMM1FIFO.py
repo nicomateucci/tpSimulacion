@@ -96,24 +96,34 @@ def partida():
     else:
         # Al no haber clientes en cola, establezco el estado del servidor en "Desocupado"
         estadoServ = 0
-        print("Servidor quedo en cero")
         # Acumulo el tiempo de servicio
         tiempoServicioTotal += (reloj - tiempoUltEvento)
+
+        # Acumulo la utilizacion de cada servidor en t para hacer la grafica de como se llega al promedio de utilización.
+        # listaUsoServidores.append(tiempoServicioTotal / reloj)
         listaEventos[1] = 9999999.0
 
 
-def generarHisotgrama(lista):
+def generarHisotgrama(lista, utilizacionProm = 0.777):
     plt.title('Utilizacion promedio del servidor')
     plt.plot(lista)
     plt.xlabel("tiempo")
     plt.ylabel("Utilizacion promedio")
-    plt.axhline(0.7, color='k', ls="dotted", xmax=3)  # Comando para linea horizontal constante
+    plt.axhline(utilizacionProm, color='k', ls="dotted", xmax=1)  # Comando para linea horizontal constante
     plt.ylim(0, 1)  # Limites para el eje Y
-    plt.xlim(0, 1000)  # Limites para el eje X
+    plt.xlim(0, len(lista))  # Limites para el eje X
     plt.show()
 
 
 def medidasDesempeño():
+    global listaUsoServidores
+    global reloj
+    global tiempoLibre
+    global areaQ
+    global tiempoServicioTotal
+    global demoraAcumulada
+    global completaronDemora
+
     print("Medidas de desempeño de la simulación: ")
     print("TIEMPO LIBRE DEL SERVIDOR %s" % tiempoLibre)
     print("PORCENTAJE DE TIEMPO LIBRE %s" % (tiempoLibre / reloj))
@@ -150,8 +160,8 @@ def nuevoEvento():
 
 #Inicio del programa principal
 #Tiempo de arribo y servicio del modelo:
-tiempoEntreArribos = 1/10
-tiempoDeServicio = 1/7
+tiempoEntreArribos = 7
+tiempoDeServicio = 9
 
 #Inicializacion de variables
 reloj = 0.0
@@ -182,12 +192,10 @@ while True:
         arribo()
     else:
         partida()
-        # print(reloj)
 
     tiempoUltEvento = reloj
 
-    print(len(cola))
-    if reloj >= 15000 :
+    if reloj >= 200:
         break
 medidasDesempeño()
 
