@@ -6,15 +6,17 @@
 # - Utilización promedio de cliente
 #
 # Funciones:
-#     arribo
-#     partida
-#     nuevoEvento
-#     medidasDesempeño
-#     generarTiempoExponencial
+#     arribo()
+#     partida()
+#     nuevoEvento()
+#     medidasDesempeño()
+#     generarTiempoExponencial(t)
+#     generarHisotgrama(lista)
 
 import numpy as np
 import random
 import math
+import matplotlib.pyplot as plt
 
 def arribo():
 
@@ -46,6 +48,9 @@ def arribo():
         # Acumulo el tiempo de servicio
         tiempoServicioTotal += (reloj - tiempoUltEvento)
 
+        # Acumulo la utilizacion de cada servidor en t para hacer la grafica de como se llega al promedio de utilización.
+        listaUsoServidores.append(tiempoServicioTotal / reloj)
+
         areaQ += (numCliEnCola * (reloj - tiempoUltEvento))
         numCliEnCola += 1
 
@@ -60,6 +65,7 @@ def partida():
     global demoraAcumulada
     global completaronDemora
     global estadoServ
+    global listaUsoServidores
 
     if numCliEnCola > 0:
 
@@ -78,6 +84,9 @@ def partida():
         # Acumulo el tiempo de servicio
         tiempoServicioTotal += (reloj - tiempoUltEvento)
 
+        # Acumulo la utilizacion de cada servidor en t para hacer la grafica de como se llega al promedio de utilización.
+        listaUsoServidores.append(tiempoServicioTotal/reloj)
+
         # Calculo el Área bajo Q(t) del período anterior (Reloj - TiempoUltimoEvento)
         areaQ += (numCliEnCola * (reloj - tiempoUltEvento))
         numCliEnCola -= 1
@@ -91,6 +100,18 @@ def partida():
         # Acumulo el tiempo de servicio
         tiempoServicioTotal += (reloj - tiempoUltEvento)
         listaEventos[1] = 9999999.0
+
+
+def generarHisotgrama(lista):
+    plt.title('Utilizacion promedio del servidor')
+    plt.plot(lista)
+    plt.xlabel("tiempo")
+    plt.ylabel("Utilizacion promedio")
+    plt.axhline(0.7, color='k', ls="dotted", xmax=3)  # Comando para linea horizontal constante
+    plt.ylim(0, 1)  # Limites para el eje Y
+    plt.xlim(0, 1000)  # Limites para el eje X
+    plt.show()
+
 
 def medidasDesempeño():
     print("Medidas de desempeño de la simulación: ")
@@ -107,6 +128,7 @@ def medidasDesempeño():
 
     var3 = demoraAcumulada / completaronDemora
     print("Demora promedio por cliente:", var3)
+    generarHisotgrama(listaUsoServidores)
 
 def generarTiempoExponencial(media):
     # return np.random.exponential(media)
@@ -144,7 +166,7 @@ numCliEnCola = 0
 areaQ = 0.0
 tiempoUltEvento = 0.0
 completaronDemora = 0
-paso = 0
+listaUsoServidores = []
 
 # Tiempo primer evento (arribo)
 listaEventos.append(generarTiempoExponencial(tiempoEntreArribos))
