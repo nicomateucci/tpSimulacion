@@ -116,6 +116,7 @@ def partida():
 
 
 def graficarPromedios(lista, utilizacionProm = 0.77):
+    plt.figure().patch.set_facecolor('silver')
     plt.title('Utilizacion promedio del servidor')
     plt.plot(lista)
     plt.xlabel("tiempo")
@@ -127,6 +128,7 @@ def graficarPromedios(lista, utilizacionProm = 0.77):
     plt.show()
 
 def graficarPromediosNumCola(lista, promedioNumCola = 0.77):
+    plt.figure().patch.set_facecolor('silver')
     plt.title('Número promedio de clientes en cola')
     plt.plot(lista, color='r')
     plt.xlabel("tiempo")
@@ -138,6 +140,7 @@ def graficarPromediosNumCola(lista, promedioNumCola = 0.77):
     plt.show()
 
 def graficarPromediosTiempoCola(lista, promedioNumCola = 0.77):
+    plt.figure().patch.set_facecolor('silver')
     plt.title('Número promedio de clientes en cola')
     plt.plot(lista, color='g')
     plt.xlabel("tiempo")
