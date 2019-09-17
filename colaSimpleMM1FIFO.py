@@ -43,6 +43,8 @@ def arribo():
 
         # Actualizo la cantidad de clientes que completaron la demora
         completaronDemora += 1
+        # Acumulo la demora promedio de clientes en cola para hacer la gráfica de como se llega al tiempo promedio final.
+        listaDemoraCola.append(demoraAcumulada / completaronDemora)
 
     else:
         # Acumulo el tiempo de servicio
@@ -53,6 +55,9 @@ def arribo():
 
         areaQ += (numCliEnCola * (reloj - tiempoUltEvento))
         numCliEnCola += 1
+
+        # Acumulo el numero promedio de clientes en cola para hacer la gráfica de como se llega al numero promedio final.
+        listaNumCliCola.append(areaQ / reloj)
 
         # Agrego el cliente a la cola
         cola.append(reloj)
@@ -77,6 +82,8 @@ def partida():
         # menos el valor del reloj cuando el cliente ingresó a la cola
 
         demoraAcumulada += reloj - cola[0]
+        # Acumulo la demora promedio de clientes en cola para hacer la gráfica de como se llega al tiempo promedio final.
+        listaDemoraCola.append(demoraAcumulada / completaronDemora)
 
         # Actualizo el contador de clientes que completaron la demora
         completaronDemora += 1
@@ -90,6 +97,10 @@ def partida():
         # Calculo el Área bajo Q(t) del período anterior (Reloj - TiempoUltimoEvento)
         areaQ += (numCliEnCola * (reloj - tiempoUltEvento))
         numCliEnCola -= 1
+        # Acumulo en numero promedio de clientes en cola para hacer la gráfica de como se llega al numero promedio final.
+        listaNumCliCola.append(areaQ / reloj)
+
+
 
         # Desplazo  todos los valores una posición hacia adelante
         cola.pop(0)
@@ -100,17 +111,40 @@ def partida():
         tiempoServicioTotal += (reloj - tiempoUltEvento)
 
         # Acumulo la utilizacion de cada servidor en t para hacer la grafica de como se llega al promedio de utilización.
-        # listaUsoServidores.append(tiempoServicioTotal / reloj)
+        listaUsoServidores.append(tiempoServicioTotal / reloj)
         listaEventos[1] = 9999999.0
 
 
-def generarHisotgrama(lista, utilizacionProm = 0.777):
+def graficarPromedios(lista, utilizacionProm = 0.77):
     plt.title('Utilizacion promedio del servidor')
     plt.plot(lista)
     plt.xlabel("tiempo")
     plt.ylabel("Utilizacion promedio")
-    plt.axhline(utilizacionProm, color='k', ls="dotted", xmax=1)  # Comando para linea horizontal constante
+    plt.text(0.5*len(lista), 0.6, 'Utilizacion promedio: %.2f' % utilizacionProm, color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.axhline(utilizacionProm, color='b', ls="-.", xmax=3)  # Comando para linea horizontal constante
     plt.ylim(0, 1)  # Limites para el eje Y
+    plt.xlim(0, len(lista))  # Limites para el eje X
+    plt.show()
+
+def graficarPromediosNumCola(lista, promedioNumCola = 0.77):
+    plt.title('Número promedio de clientes en cola')
+    plt.plot(lista, color='r')
+    plt.xlabel("tiempo")
+    plt.ylabel("Número promedio en cola")
+    plt.text(0.3 * len(lista), 0.83*(max(lista) + 1), 'Número promedio de clientes en cola: %.2f' % promedioNumCola, color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.axhline(promedioNumCola, color='r', ls="-.", xmax=3)  # Comando para linea horizontal constante
+    plt.ylim(0, max(lista) + 1)  # Limites para el eje Y
+    plt.xlim(0, len(lista))  # Limites para el eje X
+    plt.show()
+
+def graficarPromediosTiempoCola(lista, promedioNumCola = 0.77):
+    plt.title('Número promedio de clientes en cola')
+    plt.plot(lista, color='g')
+    plt.xlabel("tiempo")
+    plt.ylabel("Tiempo promedio en cola")
+    plt.text(0.3 * len(lista), 0.6*(max(lista) + 1), 'Tiempo promedio de clientes en cola: %.2f' % promedioNumCola, color="g", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.axhline(promedioNumCola, color='g', ls="-.", xmax=3)  # Comando para linea horizontal constante
+    plt.ylim(0, max(lista) + 1)  # Limites para el eje Y
     plt.xlim(0, len(lista))  # Limites para el eje X
     plt.show()
 
@@ -137,12 +171,14 @@ def medidasDesempeño():
     print("Utilización promedio de los servidores:", var2)
 
     var3 = demoraAcumulada / completaronDemora
-    print("Demora promedio por cliente:", var3)
-    generarHisotgrama(listaUsoServidores)
+    print("Demora promedio en cola por cliente:", var3)
+    graficarPromedios(listaUsoServidores, var2)
+    graficarPromediosNumCola(listaNumCliCola, var1)
+    graficarPromediosTiempoCola(listaDemoraCola, var3)
 
-def generarTiempoExponencial(media):
+def generarTiempoExponencial(tiempoEA):
     # return np.random.exponential(media)
-    return -(1/media) * math.log(random.random())
+    return -(1 / tiempoEA) * math.log(random.random())
 
 
 def nuevoEvento():
@@ -177,6 +213,8 @@ areaQ = 0.0
 tiempoUltEvento = 0.0
 completaronDemora = 0
 listaUsoServidores = []
+listaNumCliCola = []
+listaDemoraCola = []
 
 # Tiempo primer evento (arribo)
 listaEventos.append(generarTiempoExponencial(tiempoEntreArribos))
@@ -195,7 +233,7 @@ while True:
 
     tiempoUltEvento = reloj
 
-    if reloj >= 200:
+    if reloj >= 250: #and numCliEnCola == 0 and estadoServ == 0:
         break
 medidasDesempeño()
 
