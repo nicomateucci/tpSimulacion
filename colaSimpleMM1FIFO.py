@@ -121,6 +121,10 @@ def graficarPromedios(lista, utilizacionProm = 0.77):
     plt.plot(lista)
     plt.xlabel("tiempo")
     plt.ylabel("Utilizacion promedio")
+    # Banda horizontal de y=0 a y=2 de color azul
+    # y 30% de transparencia (alpha=0.3)
+    plt.axhspan(utilizacionProm - (utilizacionProm * 0.03), utilizacionProm + utilizacionProm * 0.03, alpha=0.8,
+                color='cornflowerblue')
     plt.text(0.5*len(lista), 0.6, 'Utilizacion promedio: %.2f' % utilizacionProm, color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
     plt.axhline(utilizacionProm, color='b', ls="-.", xmax=3)  # Comando para linea horizontal constante
     plt.ylim(0, 1)  # Limites para el eje Y
@@ -133,6 +137,10 @@ def graficarPromediosNumCola(lista, promedioNumCola = 0.77):
     plt.plot(lista, color='r')
     plt.xlabel("tiempo")
     plt.ylabel("Número promedio en cola")
+    # Banda horizontal de y=0 a y=2 de color azul
+    # y 30% de transparencia (alpha=0.3)
+    plt.axhspan(promedioNumCola - (promedioNumCola * 0.03), promedioNumCola + promedioNumCola * 0.03, alpha=0.8,
+                color='cornflowerblue')
     plt.text(0.3 * len(lista), 0.83*(max(lista) + 1), 'Número promedio de clientes en cola: %.2f' % promedioNumCola, color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
     plt.axhline(promedioNumCola, color='r', ls="-.", xmax=3)  # Comando para linea horizontal constante
     plt.ylim(0, max(lista) + 1)  # Limites para el eje Y
@@ -141,10 +149,14 @@ def graficarPromediosNumCola(lista, promedioNumCola = 0.77):
 
 def graficarPromediosTiempoCola(lista, promedioNumCola = 0.77):
     plt.figure().patch.set_facecolor('silver')
-    plt.title('Número promedio de clientes en cola')
+    plt.title('Tiempo promedio de clientes en cola')
     plt.plot(lista, color='g')
     plt.xlabel("tiempo")
     plt.ylabel("Tiempo promedio en cola")
+    # Banda horizontal de y=0 a y=2 de color azul
+    # y 30% de transparencia (alpha=0.3)
+    plt.axhspan(promedioNumCola - (promedioNumCola* 0.03), promedioNumCola+ promedioNumCola* 0.03, alpha=0.8,
+                color='cornflowerblue')
     plt.text(0.3 * len(lista), 0.6*(max(lista) + 1), 'Tiempo promedio de clientes en cola: %.2f' % promedioNumCola, color="g", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
     plt.axhline(promedioNumCola, color='g', ls="-.", xmax=3)  # Comando para linea horizontal constante
     plt.ylim(0, max(lista) + 1)  # Limites para el eje Y
@@ -236,7 +248,7 @@ while True:
 
     tiempoUltEvento = reloj
 
-    if reloj >= 250: #and numCliEnCola == 0 and estadoServ == 0:
+    if reloj >= 1000: #and numCliEnCola == 0 and estadoServ == 0:
         break
 medidasDesempeño()
 

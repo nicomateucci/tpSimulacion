@@ -1,3 +1,6 @@
+import math
+import random
+
 '''
 Simulador de red de colas
 
@@ -43,8 +46,19 @@ TIEMPO_ENTRE_ARRIBOS
 
 TIEMPO_ENTRE_ARRIBOS = 1/10
 INFINITO = 90000000000000.0  # 90 BILLONES DE PESOS O 1.45 BILLONES DE DOLARES
-import math
-import random
+
+
+class Evento:
+    """# Los eventos pueden ser ARRIBO o PARTIDA, tienen el tiempo en que se producen
+        el tiempo en que ingresan a las siguientes colas y su prioridad en la cola"""
+
+    def __init__(self, tipo, tiempo, pri):
+        self.tipo = tipo  # Los eventos pueden ser ARRIBO o PARTIDA
+        self.tiempo = tiempo
+        self.tiempo_fin
+        self.tiempo_inicio_cola2
+        self.tiempo_fin_cola2
+        self.pripridad = pri  # Número random uniforme 0,1
 
 class Servidor(object):
 
@@ -58,6 +72,7 @@ class Servidor(object):
         self.estadoServ = 0
         self.lista_eventos = [INFINITO, INFINITO]
         self.cola = []
+        self.cola_prioridades = []
         self.num_cli_cola = 0
         self.demora_acumulada = 0.0
         self.completaron_demora = 0
@@ -142,6 +157,16 @@ class Servidor(object):
             self.tiempo_servicio_total += (self.reloj - self.tiempo_ultimo_evento)
             Simulador.actualizar_tiempo_en_sistema(self.reloj - self.tiempo_ultimo_evento)
             self.lista_eventos[1] = INFINITO
+
+    def actualizar_cola(self):
+        '''Recorre la lista de Eventos en la cola y los ordena segun su prioridad, dejando
+            primero el de mayot prioridad'''
+        for i in range(0, len(self.cola) - 1):
+            for j in range(1, len(self.cola)):
+                if self.cola[i].prioridad < self.cola[j].prioridad:
+                    temp = self.cola[i]
+                    self.sola[i] = self.cola[j]
+                    self.sola[j] = temp
 
     def nuevoEvento(self, lista_eventos):
 
@@ -234,6 +259,18 @@ class Simulador(object):
     def actualizar_tiempo_en_sistema(cls, t):
         cls.Tiempo_clientes_en_sistema += t
 
+    def disciplina_colas(self):
+        print("Seleccione la disciplina de la cola:")
+        print("   1 - FIFO")
+        print("   2 - LIFO")
+        print("   3 - PRIORIDADES")
+        opc = int(input())
+
+
+    def actualizar_cola_prioridades(self):
+        '''Recorrer el arreglo de colas y ordenarlas segun las prioridades obtenidas aleatoriamente'''
+        self.ser1.actualizar_cola()
+        self.ser2.actualizar_cola()
 
     def estadisticas_simulacion(self):
         self.ser1.medidasDesempeño()
@@ -250,6 +287,7 @@ class Simulador(object):
     def correr_simulacion(self):
 
         self.inicializar()
+        self.disciplina_colas()
         while True:
 
             # Generar un nuevo evento. Bajo el supuesto de que nunca va a haber dos eventos en el mismo instante,
