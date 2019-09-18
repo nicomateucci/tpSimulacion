@@ -329,7 +329,7 @@ def graficarPromedio(ll, utilizacionProm = 0.77, text = ''):
     plt.axhline(utilizacionProm, color='k', ls="-.", lw="1.5", xmax=1)  # Comando para linea horizontal interlineada
 
     plt.ylim(0, 1)  # Limites para el eje Y
-    plt.xlim(0, len(min(ll)))  # Limites para el eje X
+    plt.xlim(0, 2000)  # Limites para el eje X
 
     plt.show()
 
@@ -363,18 +363,18 @@ def graficarPromedio(ll, utilizacionProm = 0.77, text = ''):
         x = len(ll[i])
         if x < minimo:
             minimo= x
-    plt.xlim(0, minimo)  # Limites para el eje X
+    plt.xlim(0, 2000)  # Limites para el eje X
 
     ## Graficos de abajo
     plt.text(200, 0.05, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(3500, 0.05, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1250, 0.05, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
 
     #Graficos de cada simulacion
-    plt.text(5000, 0.63, 'Corrida 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(5000, 0.56, 'Corrida 2', color="deeppink", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(5000, 0.49, 'Corrida 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(5000, 0.42, 'Corrida 4', color="yellow", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
-    plt.text(5000, 0.35, 'Corrida 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
+    plt.text(1500, 0.2, 'Corrida 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1500, 0.3, 'Corrida 2', color="deeppink", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1500, 0.4, 'Corrida 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1500, 0.5, 'Corrida 4', color="yellow", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
+    plt.text(1500, 0.6, 'Corrida 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
     plt.show()
 
 def graficarNumCola(ll, utilizacionProm = 0.77, text = '', opc = False):
@@ -395,11 +395,11 @@ def graficarNumCola(ll, utilizacionProm = 0.77, text = '', opc = False):
         plt.text(500, 0.3, 'Sim 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
         plt.axhspan(utilizacionProm - (utilizacionProm * 0.2), utilizacionProm + utilizacionProm * 0.2, alpha=0.8, color='cornflowerblue')
         plt.ylim(0, 0.4)  # Limites para el eje Y
-        plt.xlim(0, 800)  # Limites para el eje X
-        plt.text(100, 0.1, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-        plt.text(500, 0.1, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+        plt.xlim(0, 500)  # Limites para el eje X
+        plt.text(100, 0.05, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+        plt.text(300, 0.1, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
     else:
-        plt.ylim(0, max(ll[0]) + 1)  # Limites para el eje Y
+        plt.ylim(0, 4)  # Limites para el eje Y
 
         # Calculo el tamaño minimo de los arreglos para graficar
         minimo = len(ll[0])
@@ -408,7 +408,7 @@ def graficarNumCola(ll, utilizacionProm = 0.77, text = '', opc = False):
             if x < minimo:
                 minimo = x
         plt.xlim(0, minimo)  # Limites para el eje X
-        plt.axhspan(utilizacionProm - (utilizacionProm * 0.03), utilizacionProm + utilizacionProm * 0.03, alpha=0.8,
+        plt.axhspan(utilizacionProm - (utilizacionProm * 0.1), utilizacionProm + utilizacionProm * 0.1, alpha=0.8,
                     color='cornflowerblue')
         ## Graficos de abajo
         plt.text(200, 0.1, 'Estado transiente', color="k", style='italic',
@@ -457,10 +457,10 @@ def graficarNumCola(ll, utilizacionProm = 0.77, text = '', opc = False):
         plt.axhspan(utilizacionProm - (utilizacionProm * 0.2), utilizacionProm + utilizacionProm * 0.2, alpha=0.8, color='cornflowerblue')
         plt.ylim(0, 0.4)  # Limites para el eje Y
         plt.xlim(0, 800)  # Limites para el eje X
-        plt.text(100, 0.1, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-        plt.text(500, 0.1, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+        plt.text(100, 0.02, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+        plt.text(450, 0.02, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
     else:
-        plt.ylim(0, max(ll[0]) + 1)  # Limites para el eje Y
+        plt.ylim(0, 3.5)  # Limites para el eje Y
 
         # Calculo el tamaño minimo de los arreglos para graficar
         minimo = len(ll[0])
@@ -469,31 +469,31 @@ def graficarNumCola(ll, utilizacionProm = 0.77, text = '', opc = False):
             if x < minimo:
                 minimo = x
         plt.xlim(0, minimo)  # Limites para el eje X
-        plt.axhspan(utilizacionProm - (utilizacionProm * 0.03), utilizacionProm + utilizacionProm * 0.03, alpha=0.8,
+        plt.axhspan(utilizacionProm - (utilizacionProm * 0.1), utilizacionProm + utilizacionProm * 0.1, alpha=0.8,
                     color='cornflowerblue')
         ## Graficos de abajo
         plt.text(200, 0.1, 'Estado transiente', color="k", style='italic',
                  bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-        plt.text(3500, 0.1, 'Estado estacionario', color="b", style='italic',
+        plt.text(4200, 0.1, 'Estado estacionario', color="b", style='italic',
                  bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
 
         # Graficos de cada simulacion
-        plt.text(200, 0.5, 'Sim 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-        plt.text(1000, 0.5, 'Sim 2', color="deeppink", style='italic',
+        plt.text(5200, 0.4, 'Simulacion 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+        plt.text(5200, 0.7, 'Simulacion 2', color="deeppink", style='italic',
                  bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-        plt.text(1800, 0.5, 'Sim 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-        plt.text(2600, 0.5, 'Sim 4', color="yellow", style='italic',
+        plt.text(5200, 1, 'Simulacion 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+        plt.text(5200, 2.2, 'Simulacion 4', color="yellow", style='italic',
                  bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
-        plt.text(3400, 0.5, 'Sim 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
+        plt.text(5200, 2.5, 'Simulacion 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
     plt.show()
 
 def graficarTiempoSistema(ll, utilizacionProm = 0.77):
     plt.figure().patch.set_facecolor('silver')
-    plt.title('Tiempo promedio en sistema en 5 simulaciones')
+    plt.title('Tiempo promedio de cliente en sistema en 5 simulaciones')
     plt.plot(ll[0], 'r', ll[1], 'deeppink', ll[2], 'b', ll[3], 'yellow', ll[4], 'aqua')
     plt.xlabel("tiempo")
     plt.ylabel("Tiempo promedio en sistema")
-    plt.axhspan(utilizacionProm - (utilizacionProm * 0.03), utilizacionProm + utilizacionProm * 0.03, alpha=0.8, color='cornflowerblue')
+    plt.axhspan(utilizacionProm - (utilizacionProm * 0.1), utilizacionProm + utilizacionProm * 0.1, alpha=0.8, color='cornflowerblue')
     plt.axvspan(4000, len(min(ll)), alpha=0.5, color='y')
     plt.axhline(utilizacionProm, color='k', ls="-.", lw="1.5", xmax=1)  # Comando para linea horizontal interlineada
 
@@ -505,6 +505,14 @@ def graficarTiempoSistema(ll, utilizacionProm = 0.77):
             minimo = x
     plt.xlim(0, minimo)  # Limites para el eje X
 
+    # Graficos de cada simulacion
+    plt.text(200, 0.5, 'Sim 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1000, 0.5, 'Sim 2', color="deeppink", style='italic',
+             bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1800, 0.5, 'Sim 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(2600, 0.5, 'Sim 4', color="yellow", style='italic',
+             bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
+    plt.text(3400, 0.5, 'Sim 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
     plt.show()
 
 
@@ -519,12 +527,7 @@ def graficarTiempoSistema(ll, utilizacionProm = 0.77):
     plt.xlabel("tiempo")
     plt.ylabel("Tiempo promedio en sistema")
 
-    # Banda horizontal de y=0 a y=2 de color azul
-    # y 30% de transparencia (alpha=0.3)
-    plt.axhspan(utilizacionProm - (utilizacionProm * 0.03), utilizacionProm + utilizacionProm * 0.03, alpha=0.8, color='cornflowerblue')
-
-    # Banda vertical de x=0 a x=4 de color amarillo
-    # y 30% de transparencia
+    plt.axhspan(utilizacionProm - (utilizacionProm * 0.1), utilizacionProm + utilizacionProm * 0.1, alpha=0.8, color='cornflowerblue')
     plt.axvspan(int(var), len(min(ll)), alpha=0.5, color='y')
 
     plt.axhline(utilizacionProm, color='k', ls="-.", lw="1.5", xmax=1)  # Comando para linea horizontal interlineada '-.'
@@ -540,16 +543,15 @@ def graficarTiempoSistema(ll, utilizacionProm = 0.77):
     plt.xlim(0, minimo)  # Limites para el eje X
 
     ## Graficos de abajo
-    plt.text(3000, 1, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(13000, 1, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(200, 1, 'Estado transiente', color="k", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1000, 1, 'Estado estacionario', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
 
     #Graficos de cada simulacion
-    y = 2
-    plt.text(15000, y + 1.5, 'Corrida 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(15000, y + 3, 'Corrida 2', color="deeppink", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(15000, y + 4.5, 'Corrida 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
-    plt.text(15000, y + 6, 'Corrida 4', color="yellow", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
-    plt.text(15000, y + 7.5, 'Corrida 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
+    plt.text(1500, 3, 'Corrida 1', color="r", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1500, 5 , 'Corrida 2', color="deeppink", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1500, 7, 'Corrida 3', color="b", style='italic', bbox={'facecolor': 'white', 'alpha': 0.90, 'pad': 5})
+    plt.text(1500, 9, 'Corrida 4', color="yellow", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
+    plt.text(1500, 11 , 'Corrida 5', color="aqua", style='italic', bbox={'facecolor': 'white', 'alpha': 0.99, 'pad': 5})
     plt.show()
 
 
@@ -575,29 +577,20 @@ sim5.correr_simulacion()
 # ll1 = [sim1.ser1.listaUsoServ, sim2.ser1.listaUsoServ, sim3.ser1.listaUsoServ
 #         , sim4.ser1.listaUsoServ, sim5.ser1.listaUsoServ]
 #
-# for i in range(0,5):
-#     print(len(ll1[i]))
-#
-# # uprom = sim1.ser1.tiempo_servicio_total / sim1.ser1.reloj
-# # print(str(uprom))
-# # uprom = sim4.ser1.tiempo_servicio_total / sim4.ser1.reloj
-# # print(str(uprom))
-# # uprom = sim5.ser1.tiempo_servicio_total / sim4.ser1.reloj
-# # print(str(uprom))
 # graficarPromedio(ll1, sim4.ser1.tiempo_servicio_total / sim4.ser1.reloj, '1')
 
 
 
-# print("Numero Promedio Cola servidor 1")
-# ll2 = [sim1.ser1.listaNumCliCola, sim2.ser1.listaNumCliCola, sim3.ser1.listaNumCliCola
-#         , sim4.ser1.listaNumCliCola, sim5.ser1.listaNumCliCola]
+print("Numero Promedio Cola servidor 1")
+ll2 = [sim1.ser1.listaNumCliCola, sim2.ser1.listaNumCliCola, sim3.ser1.listaNumCliCola
+        , sim4.ser1.listaNumCliCola, sim5.ser1.listaNumCliCola]
+
+graficarNumCola(ll2, sim4.ser1.area_qt/ sim4.ser1.reloj, "Servidor 1")
+
+
+
+
 #
-# graficarNumCola(ll2, sim4.ser1.area_qt/ sim4.ser1.reloj, "Servidor 1")
-
-
-
-
-
 # print("Utilizacion Servidor 4")
 # ll1 = [sim1.ser4.listaUsoServ, sim2.ser4.listaUsoServ, sim3.ser4.listaUsoServ
 #         , sim4.ser4.listaUsoServ, sim5.ser4.listaUsoServ]
